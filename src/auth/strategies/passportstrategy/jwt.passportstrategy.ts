@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -17,6 +17,16 @@ export class JwtPassportStrategy extends PassportStrategy(Strategy) {
     }
 
     validate(payload: TokenData): TokenData {
-        return payload
+
+        if (!['free', 'premium'].includes(payload.type)) {
+            throw new UnauthorizedException('Tipo de usuario no reconocido');
+        }
+
+        if (payload.type === 'premium' && (!payload.premiumExpiresAt || new Date(payload.premiumExpiresAt) < new Date())) {
+            throw new ForbiddenException('Membresía premium expirada, renueve la sesión');
+        }
+
+        console.log(payload)
+        return payload;
     }
 }
