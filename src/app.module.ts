@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './data/user/user.module';
+import { TokenModule } from './libs/token/token.module';
 
 @Module({
   imports: [
@@ -21,9 +22,9 @@ import { UserModule } from './data/user/user.module';
       logging: process.env.DB_LOGGING === 'true',
     }),
     UserModule,
-    
+    TokenModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

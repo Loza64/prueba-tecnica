@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { IsString, IsEmail, IsDate, IsEnum, IsInt, IsOptional, IsNotEmpty, MinLength, MaxLength, Matches} from 'class-validator';

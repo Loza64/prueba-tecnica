@@ -12,9 +12,6 @@ export class Song {
     @Column({ type: 'varchar', length: 255 })
     title: string;
 
-    @Column({ type: 'varchar', length: 255 })
-    artist: string;
-
     @Column({ type: 'decimal', precision: 10, scale: 2 })
     durationInMinutes: number;
 

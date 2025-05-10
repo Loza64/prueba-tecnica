@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entity/user.entity';
 import { Repository } from 'typeorm';
 import { SignUpDto, LoginUserDto } from '../dto/user.dto';
 import * as bcrypt from 'bcrypt'
+import { TokenService } from 'src/libs/token/token.service';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private repository: Repository<User>) { }
+    constructor(@InjectRepository(User) private repository: Repository<User>, private token: TokenService) { }
 
     async signUp(body: SignUpDto) {
         try {
@@ -25,18 +26,19 @@ export class UserService {
         try {
             const user = await this.repository.findOne({
                 where: { email: body.email },
-                select: ['id', 'email', 'password', 'username']
+                select: ['id', 'username', 'premiumExpiresAt', 'password']
             });
 
             if (!user || !(await bcrypt.compare(body.password, user.password))) {
                 return null;
             }
 
-            const { password, ...result } = user;
-            
-            return { password, ...result }
+            const payload = { ...user, password: undefined }
+
+            return this.token.generateToken(payload)
+
         } catch (error) {
-            throw new InternalServerErrorException('Error en el proceso de autenticación');
+            throw new InternalServerErrorException(error);
         }
     }
 

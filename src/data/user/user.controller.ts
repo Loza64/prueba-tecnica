@@ -18,7 +18,7 @@ export class UserController {
             return res.status(401).json({ state: "error", message: "password or email incorrect" });
         }
 
-        return res.status(200).json({ state: "succes", message: "login success" });
+        return res.status(200).json({ state: "succes", message: "login success", token: response });
 
     }
 
