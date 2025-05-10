@@ -2,7 +2,7 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtPassportStrategy } from './strategies/passportstrategy/jwt.passportstrategy';
 
@@ -10,10 +10,24 @@ import { JwtPassportStrategy } from './strategies/passportstrategy/jwt.passports
   imports: [
     ConfigModule,
     PassportModule,
-    JwtModule.register({
-      secret: process.env.TOKEN_SECRET,
-      signOptions: { expiresIn: '120m' },
-    })
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        secret: config.get<string>('TOKEN_SECRET'),
+        signOptions: {
+          expiresIn: '6h',
+          issuer: 'app-name',
+          audience: ['web', 'mobile'],
+          algorithm: 'HS256',
+        },
+        verifyOptions: {
+          ignoreExpiration: false,
+          clockTolerance: 30,
+          algorithms: [config.get<'HS256' | 'RS256'>('JWT_ALGORITHM', 'HS256')],
+        }
+      }),
+    }),
   ],
   providers: [AuthService, JwtPassportStrategy],
   exports: [AuthService, JwtModule, PassportModule],

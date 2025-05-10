@@ -18,6 +18,14 @@ export class JwtPassportStrategy extends PassportStrategy(Strategy) {
 
     validate(payload: TokenData): TokenData {
 
+        const now = Math.floor(Date.now() / 1000);
+        const tokenAge = now - payload.iat;
+        const MAX_TOKEN_AGE = 6 * 60 * 60;
+
+        if (tokenAge > MAX_TOKEN_AGE) {
+            throw new UnauthorizedException('Sesión expirada (máximo 6 horas)');
+        }
+
         if (!['free', 'premium'].includes(payload.type)) {
             throw new UnauthorizedException('Tipo de usuario no reconocido');
         }
