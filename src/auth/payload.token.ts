@@ -6,11 +6,13 @@ export interface TokenBody {
     premiumExpiresAt?: Date,
 }
 
-export interface TokenData{
+export interface TokenData {
     id: number,
     username: string,
     type: string,
     premiumExpiresAt?: Date,
     iat: number,
     exp: number,
+    aud: Array<string>,
+    iss: string
 }
