@@ -33,8 +33,7 @@ export class JwtPassportStrategy extends PassportStrategy(Strategy) {
         if (payload.type === 'premium' && (!payload.premiumExpiresAt || new Date(payload.premiumExpiresAt) < new Date())) {
             throw new ForbiddenException('Membresía premium expirada, renueve la sesión');
         }
-
-        console.log(payload)
+        
         return payload;
     }
 }
