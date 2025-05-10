@@ -2,10 +2,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule} from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './data/user/user.module';
-import { TokenModule } from './libs/token/token.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { TokenModule } from './libs/token/token.module';
       logging: process.env.DB_LOGGING === 'true',
     }),
     UserModule,
-    TokenModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

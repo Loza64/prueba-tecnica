@@ -1,21 +1,25 @@
 /* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
-import { TokenService } from './token.service';
+import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
+import { JwtPassportStrategy } from './strategies/passportstrategy/jwt.passportstrategy';
 
 @Module({
   imports: [
+    ConfigModule,
+    PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.get<string>("TOKEN_SECRET"),
+        secret: config.get('TOKEN_SECRET'),
         signOptions: { expiresIn: '120m' },
       }),
     }),
   ],
-  providers: [TokenService],
-  exports: [TokenService]
+  providers: [AuthService, JwtPassportStrategy],
+  exports: [AuthService, JwtModule, PassportModule],
 })
-export class TokenModule { }
+export class AuthModule { }

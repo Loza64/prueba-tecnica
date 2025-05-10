@@ -6,11 +6,11 @@ import { User } from '../entity/user.entity';
 import { Repository } from 'typeorm';
 import { SignUpDto, LoginUserDto } from '../dto/user.dto';
 import * as bcrypt from 'bcrypt'
-import { TokenService } from 'src/libs/token/token.service';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
-    constructor(@InjectRepository(User) private repository: Repository<User>, private token: TokenService) { }
+    constructor(@InjectRepository(User) private repository: Repository<User>, private token: AuthService) { }
 
     async signUp(body: SignUpDto) {
         try {
@@ -26,7 +26,7 @@ export class UserService {
         try {
             const user = await this.repository.findOne({
                 where: { email: body.email },
-                select: ['id', 'username', 'premiumExpiresAt', 'password']
+                select: ['id', 'username', 'type', 'premiumExpiresAt', 'password']
             });
 
             if (!user || !(await bcrypt.compare(body.password, user.password))) {

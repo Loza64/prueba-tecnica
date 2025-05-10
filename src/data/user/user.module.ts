@@ -1,13 +1,14 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../entity/user.entity';
-import { TokenModule } from 'src/libs/token/token.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), TokenModule],
+  imports: [TypeOrmModule.forFeature([User]), AuthModule],
   providers: [UserService],
   controllers: [UserController],
 })
-export class UserModule {}
+export class UserModule { }

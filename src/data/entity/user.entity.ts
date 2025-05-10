@@ -13,6 +13,11 @@ export enum Gender {
     OTHER = 'other'
 }
 
+export enum UserRole {
+    FREE = 'free',
+    PREMIUM = 'premium',
+}
+
 @Entity({ name: 'users' })
 export class User {
     @PrimaryGeneratedColumn('increment')
@@ -35,6 +40,9 @@ export class User {
 
     @Column({ type: 'enum', enum: Gender, default: Gender.OTHER })
     gender: Gender;
+
+    @Column({ type: 'enum', enum: UserRole, default: UserRole.FREE })
+    type: UserRole
 
     @Column({ type: 'datetime', default: null, nullable: true })
     premiumExpiresAt: Date;
