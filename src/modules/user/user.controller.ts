@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Get, Headers, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { LoginUserDto, SignUpDto } from '../dto/user.dto';
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/strategies/authguard/jwt.auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { TokenData } from 'src/auth/payload.token';
+import { LoginUserDto, SignUpDto } from 'src/data/dto/user.dto';
 
 @Controller('user')
 export class UserController {

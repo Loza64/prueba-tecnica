@@ -2,11 +2,11 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../entity/user.entity';
 import { Repository } from 'typeorm';
-import { SignUpDto, LoginUserDto } from '../dto/user.dto';
 import * as bcrypt from 'bcrypt'
 import { AuthService } from 'src/auth/auth.service';
+import { User } from 'src/data/entity/user.entity';
+import { LoginUserDto, SignUpDto } from 'src/data/dto/user.dto';
 
 @Injectable()
 export class UserService {
