@@ -14,11 +14,11 @@ export class FavoriteSongs {
     song_id: number;
 
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
-    @ManyToOne(() => User, (user) => user.favoriteSongs)
+    @ManyToOne(() => User, (user) => user.favoriteSongs, { onDelete: 'CASCADE', nullable: true })
     user: User;
 
     @JoinColumn({ name: 'song_id', referencedColumnName: 'id' })
-    @ManyToOne(() => Song, (song) => song.favoriteSongs)
+    @ManyToOne(() => Song, (song) => song.favoriteSongs, { onDelete: 'CASCADE', nullable: true })
     song: Song;
 
 }

@@ -8,7 +8,7 @@ export class Pays {
     @PrimaryGeneratedColumn('increment')
     n_order: number;
 
-    @ManyToOne(() => User, (user) => user.pays)
+    @ManyToOne(() => User, (user) => user.pays, { onDelete: 'CASCADE', nullable: true })
     user: User;
 
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })

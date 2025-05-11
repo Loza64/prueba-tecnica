@@ -6,16 +6,16 @@ import { User } from "./user.entity";
 @Entity({ name: 'favorite_albums' })
 export class FavoriteAlbums {
     @PrimaryColumn({ type: 'int' })
-    user_id: number;
+    user_id!: number;
 
     @PrimaryColumn({ type: 'int' })
-    album_id: number;
+    album_id!: number;
 
-    @ManyToOne(() => Album, (album) => album.favoriteAlbums)
+    @ManyToOne(() => Album, (album) => album.favoriteAlbums, { onDelete: 'CASCADE', nullable: true })
     @JoinColumn({ name: 'album_id', referencedColumnName: 'id' })
     album: Album;
 
-    @ManyToOne(() => User, (user) => user.favoriteAlbums)
+    @ManyToOne(() => User, (user) => user.favoriteAlbums, { onDelete: 'CASCADE', nullable: true })
     @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
     user: User;
 }

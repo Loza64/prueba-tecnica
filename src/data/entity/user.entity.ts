@@ -44,7 +44,7 @@ export class User {
     @Column({ type: 'enum', enum: UserRole, default: UserRole.FREE })
     type: UserRole
 
-    @Column({ type: 'datetime', default: null, nullable: true })
+    @Column({ type: 'datetime', default: null, nullable: false })
     premiumExpiresAt: Date;
 
     @Column({ type: 'varchar', select: false })
@@ -58,19 +58,19 @@ export class User {
         }
     }
 
-    @OneToMany(() => Playlist, (playlists) => playlists.user)
+    @OneToMany(() => Playlist, (playlists) => playlists.createdBy, { cascade: true })
     playlists: Playlist[];
 
-    @OneToMany(() => SongToPlaylist, (songToPlaylist) => songToPlaylist.user)
+    @OneToMany(() => SongToPlaylist, (songToPlaylist) => songToPlaylist.addedBy, { cascade: true })
     songToPlaylist: SongToPlaylist[];
 
-    @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user)
+    @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user, { cascade: true })
     favoriteSongs: FavoriteSongs[];
 
-    @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.song)
+    @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user, { cascade: true })
     favoriteAlbums: FavoriteSongs[];
 
-    @OneToMany(() => Pays, (pays) => pays.user)
+    @OneToMany(() => Pays, (pays) => pays.user, { cascade: true })
     pays: Pays[];
 
 }

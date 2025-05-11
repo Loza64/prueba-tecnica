@@ -8,13 +8,13 @@ export class Artist {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column({ type: 'varchar', length: 255 })
+    @Column({ type: 'varchar', length: 255, nullable: false })
     name: string;
 
-    @Column({ type: 'varchar', length: 255 })
+    @Column({ type: 'varchar', length: 255, nullable: false })
     image: string;
 
-    @OneToMany(() => Album, (album) => album.artist)
+    @OneToMany(() => Album, (album) => album.artist, { cascade: true })
     albums: Album[];
 
     @ManyToMany(() => Artist, (artist) => artist.relations_artists)
