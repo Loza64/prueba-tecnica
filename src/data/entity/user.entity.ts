@@ -5,6 +5,7 @@ import { FavoriteSongs } from './favorite_songs.entity';
 import { Pays } from './pays.entity';
 import { Playlist } from './playlist.entity';
 import { SongToPlaylist } from './song_to_playlist.entity';
+import { FollowArtist } from './follow_artist.entity';
 
 
 export enum Gender {
@@ -44,8 +45,8 @@ export class User {
     @Column({ type: 'enum', enum: UserRole, default: UserRole.FREE })
     type: UserRole
 
-    @Column({ type: 'datetime', default: null, nullable: false })
-    premiumExpiresAt: Date;
+    @Column({ type: 'datetime', default: null, nullable: true })
+    premiumExpiresAt!: Date;
 
     @Column({ type: 'varchar', select: false })
     password: string;
@@ -58,19 +59,22 @@ export class User {
         }
     }
 
-    @OneToMany(() => Playlist, (playlists) => playlists.createdBy, { cascade: true })
+    @OneToMany(() => Playlist, (playlists) => playlists.createdBy, { eager: true, cascade: true })
     playlists: Playlist[];
 
-    @OneToMany(() => SongToPlaylist, (songToPlaylist) => songToPlaylist.addedBy, { cascade: true })
+    @OneToMany(() => SongToPlaylist, (songToPlaylist) => songToPlaylist.addedBy, { eager: true, cascade: true })
     songToPlaylist: SongToPlaylist[];
 
-    @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user, { cascade: true })
+    @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user, { eager: true, cascade: true })
     favoriteSongs: FavoriteSongs[];
 
-    @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user, { cascade: true })
+    @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user, { eager: true, cascade: true })
     favoriteAlbums: FavoriteSongs[];
 
-    @OneToMany(() => Pays, (pays) => pays.user, { cascade: true })
+    @OneToMany(() => FollowArtist, (follow) => follow.user, { eager: true })
+    follow: FollowArtist[];
+
+    @OneToMany(() => Pays, (pays) => pays.user, { eager: true, cascade: true })
     pays: Pays[];
 
 }

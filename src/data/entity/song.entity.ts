@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Album } from './album.entity';
 import { FavoriteSongs } from './favorite_songs.entity';
 import { SongToPlaylist } from './song_to_playlist.entity';
@@ -8,6 +8,9 @@ import { SongToPlaylist } from './song_to_playlist.entity';
 export class Song {
     @PrimaryGeneratedColumn('increment')
     id: number;
+
+    @Column({ type: 'int', unique: true })
+    id_album: number;
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     title: string;
@@ -19,6 +22,7 @@ export class Song {
     reproductions: number;
 
     @ManyToOne(() => Album, (album) => album.songs)
+    @JoinColumn({ name: 'id_album', referencedColumnName: 'id' })
     album: Album;
 
     @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.song, { cascade: true })

@@ -11,7 +11,7 @@ export class Album {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column({ type: 'varchar', length: 100, nullable: false })
+    @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
     title: string;
 
 
@@ -24,7 +24,7 @@ export class Album {
     @ManyToOne(() => Artist, (artist) => artist.albums, { onDelete: 'CASCADE', nullable: true })
     artist: Artist;
 
-    @OneToMany(() => Song, (song) => song.album, { cascade: true })
+    @OneToMany(() => Song, (song) => song.album, { cascade: true, onDelete: 'CASCADE' })
     songs: Song[];
 
     @OneToMany(() => FavoriteAlbums, (favoriteAlbums) => favoriteAlbums.album, { cascade: true })

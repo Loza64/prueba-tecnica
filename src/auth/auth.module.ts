@@ -24,7 +24,7 @@ import { JwtPassportStrategy } from './strategies/passportstrategy/jwt.passports
         verifyOptions: {
           ignoreExpiration: false,
           clockTolerance: 30,
-          algorithms: [config.get<'HS256' | 'RS256'>('JWT_ALGORITHM', 'HS256')],
+          algorithms: ['HS256','ES256', 'ES512', 'HS384', 'PS384', 'PS512'],
         }
       }),
     }),
