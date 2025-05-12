@@ -2,10 +2,7 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+  <p align="center">Rest api hecho con.</p>
     <p align="center">
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
@@ -18,81 +15,123 @@
     <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
   <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Prueba tecnica BetaCode
 
-## Project setup
-
-```bash
-$ npm install
-```
-
-## Compile and run the project
+## creat un .env
 
 ```bash
-# development
-$ npm run start
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASS=
+DB_NAME=spotify
 
-# watch mode
-$ npm run start:dev
+TOKEN_SECRET=
 
-# production mode
-$ npm run start:prod
+PORT= 4000
 ```
 
-## Run tests
+## Rutas api
 
-```bash
-# unit tests
-$ npm run test
+### POST
 
-# e2e tests
-$ npm run test:e2e
+ **login**:  <http://localhost:4000/user/login>
 
-# test coverage
-$ npm run test:cov
+ ```
+{
+    "email": "",
+    "password": ""
+}
+ ```
+
+ **sign up**: <http://localhost:4000/user/signup>
+
+ ```
+{
+  "username": "v",
+  "country": "",
+  "postalCode": 28001,
+  "email": "",
+  "birthdate": "1990-05-15",
+  "gender": "",
+  "password": ""
+}
+ ```
+
+ **payment** : <http://localhost:4000/user/payment> H Authorization Bearer "your token"
+
+  ```
+{
+    "amount": 23,
+    "method": "paypal"
+}
+ ```
+
+**save artist**: <http://localhost:4000/artist/save>
+
+```
+{
+    "name": "Xtrullor",
+    "image": "https://cdn-icons-png.flaticon.com/512/9385/9385289.png"
+}
 ```
 
-## Deployment
+**save album**: <http://localhost:4000/artist/save/album?artist=5>
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```
+{
+    "title": "Raity",
+    "year_date": "1990-03-01",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Itunes-music-app-icon.png"
+}
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+**save song**: <http://localhost:4000/song/save?album=2>
 
-## Resources
+```
+{
+  "title": "LALALA",
+  "durationInMinutes": 2.92,
+  "reproductions": 0
+}
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+**create playlist** <http://localhost:4000/playlist/create/mine>  H Authorization Bearer "your token"
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```{
+  "title": "My Playlist4 4",
+  "description": "This is an updated description for my playlist. Now with better songs!",
+  "type": "public"
+}
+```
 
-## Support
+### GET
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**profile**: <http://localhost:4000/user/profile>  H Authorization Bearer "your token"
 
-## Stay in touch
+**follow artist**: <http://localhost:4000/user/follow?artist=1>  H Authorization Bearer "your token"
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+**favorite album**: <http://localhost:4000/user/favorite/album?id=2>  H Authorization Bearer "your token"
 
-## License
+**favorite song**: <http://localhost:4000/user/favorite/song?id=3>  H Authorization Bearer "your token"
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**list artist**: <http://localhost:4000/artist/list>
+
+**song list**: <http://localhost:4000/song/list>
+
+**song list by album**: <http://localhost:4000/song/list?album=2>
+
+**listen or play song**: <http://localhost:4000/song/play?song=2>  H Authorization Bearer "your token"
+
+**playlist list**: <http://localhost:4000/playlist/list>  H Authorization Bearer "your token"
+
+**add song to my playlist or playlist public**: <http://localhost:4000/playlist/save/music?song=2&playlist=10>  H Authorization Bearer "your token"
+
+**restore playlist**: <http://localhost:4000/playlist/restore?playlist=3> H Authorization Bearer "your token"
+
+### DELETE
+
+**delete playlist**: <http://localhost:4000/playlist/delete?playlist=3>  H Authorization Bearer "your token"

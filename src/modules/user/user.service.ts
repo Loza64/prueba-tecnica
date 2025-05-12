@@ -158,7 +158,9 @@ export class UserService {
             user.payMethod = dto.method
             user.type = UserRole.PREMIUM;
             user.premiumExpiresAt = currentDate;
-            
+
+            await this.userRepo.save(user);
+
             const create = this.paysRepo.create({ user });
             await this.paysRepo.save(create);
             return true;
