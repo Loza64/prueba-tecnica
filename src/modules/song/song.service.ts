@@ -17,7 +17,7 @@ export class SongService {
         try {
             return await this.songRpository.find(
                 {
-                    select: ['title', 'durationInMinutes', 'reproductions'],
+                    select: ['id','title', 'durationInMinutes', 'reproductions'],
                     where:{id_album : album}
                 }
             );

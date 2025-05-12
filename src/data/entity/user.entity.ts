@@ -79,7 +79,7 @@ export class User {
     @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user, { eager: true, cascade: true })
     favoriteAlbums: FavoriteSongs[];
 
-    @OneToMany(() => FollowArtist, (follow) => follow.user, { eager: true })
+    @OneToMany(() => FollowArtist, (follow) => follow.user, { eager: true, cascade: true })
     following: FollowArtist[];
 
     @OneToMany(() => Pays, (pays) => pays.user, { eager: true, cascade: true })
