@@ -17,8 +17,8 @@ export class SongService {
         try {
             return await this.songRpository.find(
                 {
-                    select: ['id','title', 'durationInMinutes', 'reproductions'],
-                    where:{id_album : album}
+                    select: ['id', 'title', 'durationInMinutes', 'reproductions'],
+                    where: { id_album: album }
                 }
             );
         } catch {
@@ -37,6 +37,24 @@ export class SongService {
             return save;
         } catch {
             throw new Error("Error to save songs")
+        }
+    }
+
+    async listen(song: number) {
+        try {
+            const result = await this.songRpository.update(
+                { id: song },
+                { reproductions: () => "reproductions + 1" }
+            );
+
+            if (result.affected === 0) {
+                throw new Error("Song not found");
+            }
+
+            const updatedSong = await this.songRpository.findOne({ where: { id: song } });
+            return updatedSong;
+        } catch {
+            throw new Error("Error to listen songs")
         }
     }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Headers, Post, Query, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { PlaylistService } from './playlist.service';
 import { PlaylistDto } from 'src/data/dto/playlist.dto';
@@ -41,8 +41,30 @@ export class PlaylistController {
 
         const save = await this.service.songToPlayList(playlist, data.id, song)
 
-        if(save){
+        if (save) {
             return res.status(201).json({ state: "succes", message: "song save to playlist" });
+        }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete("delete")
+    async deletePlaylist(@Res() res: Response, @Query("id") playlist: number, @Headers('authorization') header: string) {
+        const token = header.replace('Bearer ', '');
+        const data = this.jwt.verifyToken(token) as TokenBody;
+        const result = await this.service.deletePlaylist(playlist, data.id)
+        if (result) {
+            return res.status(200).json({ state: "succes", message: "playlist deleted" });
+        }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get("restore")
+    async restorePlaylist(@Res() res: Response, @Query("id") playlist: number, @Headers('authorization') header: string) {
+        const token = header.replace('Bearer ', '');
+        const data = this.jwt.verifyToken(token) as TokenBody;
+        const result = await this.service.restorePlaylist(playlist, data.id)
+        if (result) {
+            return res.status(200).json({ state: "succes", message: "playlist restored" });
         }
     }
 }

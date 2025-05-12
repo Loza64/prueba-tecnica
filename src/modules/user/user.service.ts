@@ -58,7 +58,19 @@ export class UserService {
     async getById(id: number) {
         try {
 
-            const user = await this.userRepo.findOne({ where: { id } })
+            const user = await this.userRepo.findOne({
+                where: { id }, relations: [
+                    'playlists',
+                    'songToPlaylist',
+                    'favoriteSongs',
+                    'favoriteSongs.song',
+                    'favoriteAlbums',
+                    'favoriteAlbums.album',
+                    'following',
+                    'following.artist',
+                    'pays'
+                ]
+            })
 
             if (!user) throw new Error('User not found');
 

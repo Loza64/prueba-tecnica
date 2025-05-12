@@ -4,9 +4,10 @@ import { SongController } from './song.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Song } from 'src/data/entity/song.entity';
 import { Album } from 'src/data/entity/album.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Song, Album])],
+  imports: [TypeOrmModule.forFeature([Song, Album]), AuthModule],
   providers: [SongService],
   controllers: [SongController],
 })

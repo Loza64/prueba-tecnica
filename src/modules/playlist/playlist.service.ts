@@ -26,45 +26,81 @@ export class PlaylistService {
             const create = this.playlistRepo.create({ ...data, createdBy: user })
             await this.playlistRepo.save(create);
             return true
-        } catch (error) {
-            throw new Error(error instanceof Error ? error.message : String(error))
+        } catch {
+            throw new Error("Errir ti upload playlist")
         }
     }
 
     async getPlaylist() {
-        return await this.playlistRepo.find({
-            where: { state: PlaylistState.ACTIVE }
-        });
+        try {
+            return await this.playlistRepo.find({
+                where: { state: PlaylistState.ACTIVE }
+            });
+        } catch {
+            throw new Error("Error to show playlist")
+        }
     }
 
     async songToPlayList(idPlayList: number, idUser: number, idSong: number) {
-        const playlist = await this.playlistRepo.findOne({ where: { id: idPlayList }, relations: ['createdBy'] })
-        const addedBy = await this.userRepo.findOne({ where: { id: idUser } })
-        const song = await this.songRepo.findOne({ where: { id: idSong } })
+        try {
+            const playlist = await this.playlistRepo.findOne({ where: { id: idPlayList }, relations: ['createdBy'] })
+            const addedBy = await this.userRepo.findOne({ where: { id: idUser } })
+            const song = await this.songRepo.findOne({ where: { id: idSong } })
 
-        if (!playlist) {
-            throw new Error("Playlist not found")
+            if (!playlist) {
+                throw new Error("Playlist not found")
+            }
+
+            if (!addedBy) {
+                throw new Error("User not found")
+            }
+
+            if (playlist.state === PlaylistState.DELETED) {
+                throw new Error("Playlist must be active")
+            }
+
+            if (playlist.type === PlaylistVisibility.PRIVATE && playlist.createdBy.id !== idUser) {
+                throw new Error("Playlist is private")
+            }
+
+            if (!song) {
+                throw new Error("Song not found")
+            }
+
+            const create = this.stpRepo.create({ addedBy, playlist, song })
+            await this.stpRepo.save(create);
+            return true;
+        } catch {
+            throw new Error("Error to save song from playlist")
         }
 
-        if (!addedBy) {
-            throw new Error("User not found")
+    }
+
+    async deletePlaylist(playlist: number, iduser: number) {
+        try {
+            const playlistEntity = await this.playlistRepo.findOne(
+                { where: { id: playlist, createdBy: { id: iduser } }, relations: ['createdBy'] }
+            );
+            if (!playlistEntity) throw new Error("Playlist not found");
+            playlistEntity.state = PlaylistState.DELETED;
+            await this.playlistRepo.save(playlistEntity);
+            return playlistEntity;
+        } catch {
+            throw new Error("Error to delete playlist");
         }
+    }
 
-        if (playlist.state === PlaylistState.DELETED) {
-            throw new Error("Playlist must be active")
+    async restorePlaylist(playlist: number, iduser: number) {
+        try {
+            const playlistEntity = await this.playlistRepo.findOne(
+                { where: { id: playlist, createdBy: { id: iduser } }, relations: ['createdBy'] }
+            );
+            if (!playlistEntity) throw new Error("Playlist not found");
+            playlistEntity.state = PlaylistState.ACTIVE;
+            await this.playlistRepo.save(playlistEntity);
+            return playlistEntity;
+        } catch {
+            throw new Error("Error to deleted playlist")
         }
-
-        if (playlist.type === PlaylistVisibility.PRIVATE && playlist.createdBy.id !== idUser) {
-            throw new Error("Playlist is private")
-        }
-
-        if (!song) {
-            throw new Error("Song not found")
-        }
-
-        const create = this.stpRepo.create({ addedBy, playlist, song })
-        await this.stpRepo.save(create);
-        return true;
-
     }
 }

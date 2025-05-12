@@ -6,6 +6,7 @@ import { Pays } from './pays.entity';
 import { Playlist } from './playlist.entity';
 import { SongToPlaylist } from './song_to_playlist.entity';
 import { FollowArtist } from './follow_artist.entity';
+import { FavoriteAlbums } from './favorite_albums.entity';
 
 
 export enum Gender {
@@ -76,8 +77,8 @@ export class User {
     @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user, { eager: true, cascade: true })
     favoriteSongs: FavoriteSongs[];
 
-    @OneToMany(() => FavoriteSongs, (favoriteSongs) => favoriteSongs.user, { eager: true, cascade: true })
-    favoriteAlbums: FavoriteSongs[];
+    @OneToMany(() => FavoriteAlbums, (FavoriteAlbums) => FavoriteAlbums.user, { eager: true, cascade: true })
+    favoriteAlbums: FavoriteAlbums[];
 
     @OneToMany(() => FollowArtist, (follow) => follow.user, { eager: true, cascade: true })
     following: FollowArtist[];
