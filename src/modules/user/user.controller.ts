@@ -6,6 +6,7 @@ import { JwtAuthGuard } from 'src/auth/strategies/authguard/jwt.auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { TokenBody } from 'src/auth/payload.token';
 import { LoginUserDto, SignUpDto } from 'src/data/dto/user.dto';
+import { PayDto } from 'src/data/dto/pay.dto';
 
 @Controller('user')
 export class UserController {
@@ -77,6 +78,16 @@ export class UserController {
         const favorite = await this.service.favoriteAlbum(album, data.id)
         if (favorite) {
             return res.status(200).json({ state: "succes", message: "album added to favorites" });
+        }
+    }
+
+    @Post("payment")
+    async generatePay(@Res() res: Response, @Body() dto: PayDto, @Headers('authorization') header: string) {
+        const token = header.replace('Bearer ', '')
+        const data = this.jwt.verifyToken(token) as TokenBody
+        const response = await this.service.genarePay(data.id, dto)
+        if(response){
+            return res.status(200).json({ state: "succes", message: "el pago se realizo con exito, ahora eres usuario premium :D" });
         }
     }
 

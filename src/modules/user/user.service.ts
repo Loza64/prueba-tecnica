@@ -12,6 +12,9 @@ import { FavoriteAlbums } from 'src/data/entity/favorite_albums.entity';
 import { Artist } from 'src/data/entity/artista.entity';
 import { Song } from 'src/data/entity/song.entity';
 import { Album } from 'src/data/entity/album.entity';
+import { Pays } from 'src/data/entity/pays.entity';
+import { UserRole } from 'src/data/entity/user.entity';
+import { PayDto } from 'src/data/dto/pay.dto';
 
 @Injectable()
 export class UserService {
@@ -23,6 +26,7 @@ export class UserService {
         @InjectRepository(FavoriteSongs) private favoriteSongRepo: Repository<FavoriteSongs>,
         @InjectRepository(Album) private albumRepo: Repository<Album>,
         @InjectRepository(FavoriteAlbums) private favoriteAlbumsRepo: Repository<FavoriteAlbums>,
+        @InjectRepository(Pays) private paysRepo: Repository<Pays>,
         private token: AuthService) { }
 
     async signUp(body: SignUpDto) {
@@ -142,4 +146,24 @@ export class UserService {
         }
     }
 
+    async genarePay(iduser: number, dto: PayDto) {
+        try {
+            const user = await this.userRepo.findOne({ where: { id: iduser } })
+            if (!user) {
+                throw new NotFoundException("User not found");
+            }
+            const currentDate = new Date();
+            currentDate.setMonth(currentDate.getMonth() + 4);
+
+            user.payMethod = dto.method
+            user.type = UserRole.PREMIUM;
+            user.premiumExpiresAt = currentDate;
+            
+            const create = this.paysRepo.create({ user });
+            await this.paysRepo.save(create);
+            return true;
+        } catch (error) {
+            throw new InternalServerErrorException(error);
+        }
+    }
 }
