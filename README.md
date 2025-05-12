@@ -33,7 +33,7 @@ TOKEN_SECRET=
 
 PORT= 4000
 ```
-
+**NOTA**: Se utlizo la libreria typeorm para usar la bd mysql, solo necesitas crear la BD lo demas lo creara typeorm cuando ejecutes la api
 ## Rutas api
 
 ### POST
