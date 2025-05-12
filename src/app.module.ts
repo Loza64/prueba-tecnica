@@ -5,7 +5,6 @@ import { AppService } from './app.service';
 import { ConfigModule} from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './modules/user/user.module';
-import { AlbumModule } from './modules/album/album.module';
 import { ArtistaModule } from './modules/artista/artista.module';
 import { PaysModule } from './modules/pays/pays.module';
 import { PlaylistModule } from './modules/playlist/playlist.module';
@@ -26,7 +25,6 @@ import { SongModule } from './modules/song/song.module';
       logging: process.env.DB_LOGGING === 'true',
     }),
     UserModule,
-    AlbumModule,
     ArtistaModule,
     PaysModule,
     PlaylistModule,

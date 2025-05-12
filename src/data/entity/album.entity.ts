@@ -14,7 +14,6 @@ export class Album {
     @Column({ type: 'varchar', length: 100, nullable: false, unique: true })
     title: string;
 
-
     @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
     year_date: Date;
 
@@ -27,7 +26,7 @@ export class Album {
     @OneToMany(() => Song, (song) => song.album, { cascade: true, onDelete: 'CASCADE' })
     songs: Song[];
 
-    @OneToMany(() => FavoriteAlbums, (favoriteAlbums) => favoriteAlbums.album, { cascade: true })
+    @OneToMany(() => FavoriteAlbums, (favoriteAlbums) => favoriteAlbums.album, { onDelete:'CASCADE', cascade: true })
     favoriteAlbums: FavoriteAlbums[];
 
 }

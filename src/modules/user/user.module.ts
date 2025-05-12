@@ -9,9 +9,11 @@ import { FollowArtist } from 'src/data/entity/follow_artist.entity';
 import { FavoriteAlbums } from 'src/data/entity/favorite_albums.entity';
 import { FavoriteSongs } from 'src/data/entity/favorite_songs.entity';
 import { Artist } from 'src/data/entity/artista.entity';
+import { Album } from 'src/data/entity/album.entity';
+import { Song } from 'src/data/entity/song.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Artist, FollowArtist, FavoriteAlbums, FavoriteSongs]), AuthModule],
+  imports: [TypeOrmModule.forFeature([User, Artist, FollowArtist, Album, FavoriteAlbums, Song, FavoriteSongs]), AuthModule],
   providers: [UserService],
   controllers: [UserController],
 })

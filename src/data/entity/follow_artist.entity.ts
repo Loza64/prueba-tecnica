@@ -16,7 +16,7 @@ export class FollowArtist {
     id_artist: number
 
     @JoinColumn({ name: "id_user", referencedColumnName: "id" })
-    @ManyToOne(() => User, (user) => user.follow)
+    @ManyToOne(() => User, (user) => user.following)
     user: User;
 
     @JoinColumn({ name: "id_artist", referencedColumnName: "id" })

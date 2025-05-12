@@ -58,4 +58,26 @@ export class UserController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
+    @Get("favorite/song")
+    async favoriteSong(@Query("id") song: number, @Res() res: Response, @Headers('authorization') header: string) {
+        const token = header.replace('Bearer ', '')
+        const data = this.jwt.verifyToken(token) as TokenBody
+        const favorite = await this.service.favoriteSong(song, data.id)
+        if (favorite) {
+            return res.status(200).json({ state: "succes", message: "song added to favorites" });
+        }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get("favorite/album")
+    async favoriteAlbum(@Query("id") album: number, @Res() res: Response, @Headers('authorization') header: string) {
+        const token = header.replace('Bearer ', '')
+        const data = this.jwt.verifyToken(token) as TokenBody
+        const favorite = await this.service.favoriteAlbum(album, data.id)
+        if (favorite) {
+            return res.status(200).json({ state: "succes", message: "album added to favorites" });
+        }
+    }
+
 }

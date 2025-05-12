@@ -19,6 +19,11 @@ export enum UserRole {
     PREMIUM = 'premium',
 }
 
+export enum Pay {
+    PAYPAL = 'paypal',
+    CARD = 'card'
+}
+
 @Entity({ name: 'users' })
 export class User {
     @PrimaryGeneratedColumn('increment')
@@ -48,6 +53,9 @@ export class User {
     @Column({ type: 'datetime', default: null, nullable: true })
     premiumExpiresAt!: Date;
 
+    @Column({ type: 'enum', enum: Pay, nullable: true, default: null })
+    payMethod: Pay
+
     @Column({ type: 'varchar', select: false })
     password: string;
 
@@ -72,7 +80,7 @@ export class User {
     favoriteAlbums: FavoriteSongs[];
 
     @OneToMany(() => FollowArtist, (follow) => follow.user, { eager: true })
-    follow: FollowArtist[];
+    following: FollowArtist[];
 
     @OneToMany(() => Pays, (pays) => pays.user, { eager: true, cascade: true })
     pays: Pays[];

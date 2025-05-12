@@ -9,10 +9,10 @@ export class Song {
     @PrimaryGeneratedColumn('increment')
     id: number;
 
-    @Column({ type: 'int', unique: true })
+    @Column({ type: 'int' })
     id_album: number;
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
+    @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
     title: string;
 
     @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })

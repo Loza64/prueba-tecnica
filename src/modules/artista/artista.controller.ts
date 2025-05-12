@@ -19,7 +19,7 @@ export class ArtistaController {
     @Get("list")
     async getList(@Res() res: Response) {
         const list = await this.service.getArtists();
-        return res.status(200).json({ state: "succes", message: "list artist", list });
+        return res.status(200).json(list);
     }
 
     @Post("save/album")

@@ -22,8 +22,22 @@ export class ArtistaService {
             return instanceToPlain(
                 await this.artistRepository
                     .createQueryBuilder('artist')
+                    .leftJoinAndSelect('artist.albums', 'albums')
                     .leftJoinAndSelect('artist.followers', 'followers')
                     .leftJoinAndSelect('followers.user', 'user')
+                    .select([
+                        'artist',
+                        'albums',
+                        'followers',
+                        'user.id',
+                        'user.username',
+                        'user.country',
+                        'user.postalCode',
+                        'user.email',
+                        'user.birthdate',
+                        'user.gender',
+                        'user.type'
+                    ])
                     .getMany()
             )
         } catch (error: any) {
